@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-5">Inventory Management</h1>
+  <p class="lead">Products + Locations + Movements report.</p>
+  <a class="btn btn-primary" href="{{ url_for('main.product_list') }}">View Products</a>
+  <a class="btn btn-secondary" href="{{ url_for('main.balance') }}">View Balance</a>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Balance Report</h2>
+<table class="table table-bordered">
+  <thead><tr><th>Product</th><th>Warehouse</th><th>Qty</th></tr></thead>
+  <tbody>
+    {% for r in rows %}
+      <tr>
+        <td>{{ r.product }}</td>
+        <td>{{ r.location }}</td>
+        <td>{{ r.qty }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="3">No balances to show</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
