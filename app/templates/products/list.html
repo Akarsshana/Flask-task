@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center">
+  <h2>{{ 'Products' if type == 'product' else 'Locations' }}</h2>
+  <a class="btn btn-success" href="{{ url_for('main.product_add' if type == 'product' else 'main.location_add') }}">
+    Add {{ 'Product' if type == 'product' else 'Location' }}
+  </a>
+</div>
+
+<table class="table table-striped mt-3">
+  <thead>
+    <tr><th>Name</th><th>Description</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.description }}</td>
+      <td>
+        <a class="btn btn-sm btn-primary" href="{{ url_for('main.product_edit' if type == 'product' else 'main.location_edit', product_id=item.product_id if type == 'product' else None, location_id=item.location_id if type != 'product' else None) }}">Edit</a>
+        <form method="post" action="{{ url_for('main.product_delete' if type == 'product' else 'main.location_delete', product_id=item.product_id if type == 'product' else None, location_id=item.location_id if type != 'product' else None) }}" style="display:inline;" onsubmit="return confirm('Delete?');">
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No items</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
