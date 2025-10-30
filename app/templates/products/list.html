@@ -1,31 +1,199 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center">
-  <h2>{{ 'Products' if type == 'product' else 'Locations' }}</h2>
-  <a class="btn btn-success" href="{{ url_for('main.product_add' if type == 'product' else 'main.location_add') }}">
-    Add {{ 'Product' if type == 'product' else 'Location' }}
-  </a>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-box"></i> Products Dashboard</h2>
+    <a class="btn btn-primary" href="{{ url_for('main.product_add') }}">
+      <i class="fas fa-plus"></i> Add Product
+    </a>
+  </div>
+
+  <!-- Stock Overview Chart -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-4"><i class="fas fa-chart-bar"></i> Stock Overview</h5>
+          <canvas id="stockChart" style="max-height: 300px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3"><i class="fas fa-list"></i> Product List</h5>
+          
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th style="width: 15%;">Product ID</th>
+                  <th style="width: 20%;">Name</th>
+                  <th style="width: 30%;">Description</th>
+                  <th style="width: 15%;" class="text-center">Quantity</th>
+                  <th style="width: 20%;" class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if items %}
+                  {% for item in items %}
+                  {% set qty = item.qty or 0 %}
+                  <tr>
+                    <td><strong>{{ item.product_id }}</strong></td>
+                    <td>{{ item.name or 'Unnamed' }}</td>
+                    <td class="text-muted">{{ item.description or 'No description' }}</td>
+                    <td class="text-center">
+                      {% if qty == 0 %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                      {% elif qty < 10 %}
+                        <span class="badge bg-warning text-dark">{{ qty }} units</span>
+                      {% elif qty < 50 %}
+                        <span class="badge bg-info text-dark">{{ qty }} units</span>
+                      {% else %}
+                        <span class="badge bg-success">{{ qty }} units</span>
+                      {% endif %}
+                    <td class="text-center">
+  <div class="d-flex justify-content-center gap-2">
+
+    <!-- Edit Button -->
+    <a href="{{ url_for('main.product_edit', product_id=item.product_id) }}"
+       class="btn btn-sm d-flex align-items-center gap-1 shadow-sm pastel-btn"
+       style="background-color: #eac9c1; color: #3b3b3b; border: none; border-radius: 8px;"
+       title="Edit Product">
+      <i class="fas fa-pen-to-square"></i>
+      <span class="fw-semibold">Edit</span>
+    </a>
+
+    <!-- Delete Button -->
+    <form method="post" 
+          action="{{ url_for('main.product_delete', product_id=item.product_id) }}"
+          style="display:inline;"
+          onsubmit="return confirm('Are you sure you want to delete {{ item.name }}?');">
+      <button type="submit" 
+              class="btn btn-sm d-flex align-items-center gap-1 shadow-sm pastel-btn"
+              style="background-color: #f2d7d5; color: #3b3b3b; border: none; border-radius: 8px;"
+              title="Delete Product">
+        <i class="fas fa-trash-alt"></i>
+        <span class="fw-semibold">Delete</span>
+      </button>
+    </form>
+
+  </div>
+</td>
+
+                  </tr>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                      <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
+                      <p class="mb-0">No products available. Click "Add Product" to get started.</p>
+                    </td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<table class="table table-striped mt-3">
-  <thead>
-    <tr><th>Name</th><th>Description</th><th>Actions</th></tr>
-  </thead>
-  <tbody>
-    {% for item in items %}
-    <tr>
-      <td>{{ item.name }}</td>
-      <td>{{ item.description }}</td>
-      <td>
-        <a class="btn btn-sm btn-primary" href="{{ url_for('main.product_edit' if type == 'product' else 'main.location_edit', product_id=item.product_id if type == 'product' else None, location_id=item.location_id if type != 'product' else None) }}">Edit</a>
-        <form method="post" action="{{ url_for('main.product_delete' if type == 'product' else 'main.location_delete', product_id=item.product_id if type == 'product' else None, location_id=item.location_id if type != 'product' else None) }}" style="display:inline;" onsubmit="return confirm('Delete?');">
-          <button class="btn btn-sm btn-danger">Delete</button>
-        </form>
-      </td>
-    </tr>
-    {% else %}
-    <tr><td colspan="3">No items</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+
+<script>
+{% if items %}
+  const productNames = {{ items | map(attribute='name') | map('default', 'Unnamed') | list | tojson }};
+  const productQtys = {{ items | map(attribute='qty') | map('default', 0) | list | tojson }};
+
+  const ctx = document.getElementById('stockChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Stock Quantity',
+        data: productQtys,
+        backgroundColor: productQtys.map(qty => {
+          if (qty === 0) return 'rgba(220, 53, 69, 0.7)';
+          if (qty < 10) return 'rgba(255, 193, 7, 0.7)';
+          if (qty < 50) return 'rgba(23, 162, 184, 0.7)';
+          return 'rgba(40, 167, 69, 0.7)';
+        }),
+        borderColor: productQtys.map(qty => {
+          if (qty === 0) return 'rgba(220, 53, 69, 1)';
+          if (qty < 10) return 'rgba(255, 193, 7, 1)';
+          if (qty < 50) return 'rgba(23, 162, 184, 1)';
+          return 'rgba(40, 167, 69, 1)';
+        }),
+        borderWidth: 2,
+        borderRadius: 6,
+        barThickness: 50
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { 
+          display: false 
+        },
+        title: {
+          display: true,
+          text: 'Current Stock Levels',
+          font: { 
+            size: 16,
+            weight: 'bold'
+          },
+          padding: 20,
+          color: '#f1f5f9'
+        },
+        tooltip: {
+          backgroundColor: 'rgba(15, 23, 42, 0.9)',
+          titleColor: '#f1f5f9',
+          bodyColor: '#f1f5f9',
+          borderColor: '#6366f1',
+          borderWidth: 1,
+          padding: 12,
+          displayColors: false,
+          callbacks: {
+            label: function(context) {
+              return 'Quantity: ' + context.parsed.y + ' units';
+            }
+          }
+        }
+      },
+      scales: {
+        y: { 
+          beginAtZero: true,
+          ticks: { 
+            stepSize: 10,
+            color: '#94a3b8',
+            font: { size: 12 }
+          },
+          grid: {
+            color: 'rgba(148, 163, 184, 0.1)'
+          }
+        },
+        x: {
+          ticks: { 
+            color: '#94a3b8',
+            font: { size: 12 }
+          },
+          grid: {
+            display: false
+          }
+        }
+      }
+    }
+  });
+{% endif %}
+</script>
 {% endblock %}

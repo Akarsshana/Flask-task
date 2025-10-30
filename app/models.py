@@ -1,5 +1,4 @@
-# app/models.py
-from . import db
+from app import db
 from datetime import datetime
 import uuid
 from flask_login import UserMixin
@@ -7,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def gen_id():
+    """Generate short UUIDs for locations and movements"""
     return str(uuid.uuid4())[:8]
 
 
@@ -14,18 +14,37 @@ def gen_id():
 # Product Model
 # -----------------------
 class Product(db.Model):
-    product_id = db.Column(db.String(32), primary_key=True, default=gen_id)
-    name = db.Column(db.String(120), nullable=False, unique=True)
-    description = db.Column(db.String(300))
+    __tablename__ = 'product'
+
+    product_id = db.Column(db.String(10), primary_key=True)  # e.g., PI001
+    name = db.Column(db.String(120), nullable=False)
+    description = db.Column(db.String(255))
+    qty = db.Column(db.Integer, default=0)
+
+    def __init__(self, name, description=None, qty=0):
+        # Auto-generate product_id like PI001, PI002, etc.
+        last_product = Product.query.order_by(Product.product_id.desc()).first()
+        if last_product and last_product.product_id.startswith("PI"):
+            last_num = int(last_product.product_id.replace("PI", ""))
+            new_num = last_num + 1
+        else:
+            new_num = 1
+        self.product_id = f"PI{new_num:03d}"
+
+        self.name = name
+        self.description = description
+        self.qty = qty
 
     def __repr__(self):
-        return f'<Product {self.name}>'
+        return f'<Product {self.product_id} - {self.name}>'
 
 
 # -----------------------
 # Location Model
 # -----------------------
 class Location(db.Model):
+    __tablename__ = 'location'
+
     location_id = db.Column(db.String(32), primary_key=True, default=gen_id)
     name = db.Column(db.String(120), nullable=False, unique=True)
     description = db.Column(db.String(300))
@@ -38,14 +57,15 @@ class Location(db.Model):
 # Product Movement Model
 # -----------------------
 class ProductMovement(db.Model):
+    __tablename__ = 'product_movement'
+
     movement_id = db.Column(db.String(32), primary_key=True, default=gen_id)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     from_location = db.Column(db.String(32), db.ForeignKey('location.location_id'), nullable=True)
     to_location = db.Column(db.String(32), db.ForeignKey('location.location_id'), nullable=True)
-    product_id = db.Column(db.String(32), db.ForeignKey('product.product_id'), nullable=False)
+    product_id = db.Column(db.String(10), db.ForeignKey('product.product_id'), nullable=False)
     qty = db.Column(db.Integer, nullable=False)
 
-    # Optional: relationship shortcuts
     product = db.relationship('Product', foreign_keys=[product_id])
     from_loc = db.relationship('Location', foreign_keys=[from_location])
     to_loc = db.relationship('Location', foreign_keys=[to_location])
@@ -55,9 +75,11 @@ class ProductMovement(db.Model):
 
 
 # -----------------------
-# User Model (for login)
+# User Model
 # -----------------------
 class User(UserMixin, db.Model):
+    __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)

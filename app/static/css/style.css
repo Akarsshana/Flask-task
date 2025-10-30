@@ -1,24 +1,28 @@
 /* ============================================
-   DARK MODE INVENTORY APP STYLES
+   LIGHT PASTEL INVENTORY APP - MODERN & CLEAN
+   Color Palette: Soft Coral, Sage Green, Warm Taupe
    ============================================ */
 
 :root {
-  --primary: #6366f1;
-  --primary-light: #818cf8;
-  --primary-dark: #4338ca;
-  --success: #22c55e;
-  --danger: #ef4444;
-  --warning: #eab308;
-  --info: #3b82f6;
-  --dark-bg: #0f172a;
-  --dark-surface: #1e293b;
-  --dark-lighter: #334155;
-  --text: #f1f5f9;
-  --text-muted: #94a3b8;
-  --border: #334155;
-  --shadow: rgba(0, 0, 0, 0.6);
-  --glow: rgba(99, 102, 241, 0.3);
+  --primary: #e08e8e;
+  --primary-hover: #d67b7b;
+  --secondary: #a8d5ba;
+  --accent: #c4a57b;
+  --bg-main: #faf9f7;
+  --bg-card: #ffffff;
+  --bg-hover: #f5f3f0;
+  --text-primary: #3d3d3d;
+  --text-secondary: #6b6b6b;
+  --text-muted: #9a9a9a;
+  --border: #e8e4df;
+  --border-light: #f0ede8;
+  --shadow: rgba(224, 142, 142, 0.08);
+  --shadow-hover: rgba(224, 142, 142, 0.15);
 }
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
 
 * {
   margin: 0;
@@ -27,12 +31,11 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
-  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #faf9f7 0%, #f5f1ed 100%);
+  color: var(--text-primary);
   min-height: 100vh;
   line-height: 1.6;
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* ============================================
@@ -40,42 +43,44 @@ body {
    ============================================ */
 
 .navbar {
-  background: rgba(30, 41, 59, 0.9) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 3px 10px var(--shadow);
-  transition: background 0.4s ease;
+  box-shadow: 0 2px 12px var(--shadow);
+  padding: 0.75rem 0;
 }
 
 .navbar-brand {
   font-weight: 700;
   color: var(--primary) !important;
-  letter-spacing: -0.5px;
   font-size: 1.5rem;
-  transition: color 0.3s ease;
+  letter-spacing: -0.5px;
+  transition: all 0.2s ease;
 }
 
 .navbar-brand:hover {
-  color: var(--primary-light) !important;
-  text-shadow: 0 0 10px var(--glow);
+  color: var(--primary-hover) !important;
+  transform: translateY(-1px);
 }
 
 .nav-link {
-  color: var(--text-muted) !important;
+  color: var(--text-secondary) !important;
   font-weight: 500;
-  margin: 0 0.4rem;
+  margin: 0 0.25rem;
+  padding: 0.5rem 1rem !important;
   border-radius: 8px;
-  transition: color 0.3s, background 0.3s;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
 }
 
 .nav-link:hover {
-  color: var(--primary-light) !important;
-  background: rgba(99, 102, 241, 0.1);
+  color: var(--primary) !important;
+  background: rgba(224, 142, 142, 0.08);
 }
 
-.navbar-nav .nav-link.active {
-  color: var(--primary-light) !important;
-  background: rgba(99, 102, 241, 0.15);
+.nav-link.active {
+  color: var(--primary) !important;
+  background: rgba(224, 142, 142, 0.12);
 }
 
 /* ============================================
@@ -83,14 +88,8 @@ body {
    ============================================ */
 
 .container {
-  background: var(--dark-surface);
-  border-radius: 16px;
-  box-shadow: 0 10px 40px var(--shadow);
-  padding: 2rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  animation: fadeInUp 0.5s ease;
-  border: 1px solid var(--border);
+  max-width: 1200px;
+  padding: 2rem 1rem;
 }
 
 /* ============================================
@@ -98,71 +97,167 @@ body {
    ============================================ */
 
 .card {
-  background: var(--dark-lighter);
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
-}
-
-/* ============================================
-   BUTTONS
-   ============================================ */
-
-.btn {
-  border-radius: 8px;
-  padding: 0.6rem 1.3rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  border: none;
-  letter-spacing: 0.5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px var(--shadow);
   transition: all 0.3s ease;
-  position: relative;
   overflow: hidden;
 }
 
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--shadow-hover);
+  border-color: var(--primary);
 }
 
-.btn:hover::before {
-  width: 280px;
-  height: 280px;
+.card-body {
+  padding: 1.75rem;
+}
+
+.card-title {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-title i {
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   BUTTONS - COHESIVE LIGHT THEME
+   ============================================ */
+
+.btn {
+  border-radius: 10px;
+  padding: 0.6rem 1.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 2px solid transparent;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+}
+
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-  color: #fff;
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
 }
 
 .btn-primary:hover {
-  background: var(--primary-light);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-  transform: translateY(-2px);
-}
-
-.btn-danger {
-  background: linear-gradient(135deg, #b91c1c, var(--danger));
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(224, 142, 142, 0.3);
   color: white;
 }
 
 .btn-success {
-  background: linear-gradient(135deg, #15803d, var(--success));
+  background: var(--secondary);
   color: white;
+  border-color: var(--secondary);
+}
+
+.btn-success:hover {
+  background: #95c9a9;
+  border-color: #95c9a9;
+  box-shadow: 0 4px 12px rgba(168, 213, 186, 0.3);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+
+.btn-outline-primary {
+  background: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-outline-danger {
+  background: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-danger:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-danger {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.btn-danger:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(224, 142, 142, 0.3);
+  color: white;
+}
+
+.btn-info {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.btn-info:hover {
+  background: #b89568;
+  border-color: #b89568;
+  color: white;
+}
+
+.btn-dark {
+  background: var(--text-primary);
+  color: white;
+  border-color: var(--text-primary);
+}
+
+.btn-dark:hover {
+  background: var(--text-secondary);
+  border-color: var(--text-secondary);
+  color: white;
+}
+
+.btn-sm {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
+
+.btn-lg {
+  padding: 0.8rem 1.8rem;
+  font-size: 1rem;
+}
+
+.btn-group .btn {
+  margin: 0 3px;
 }
 
 /* ============================================
@@ -170,20 +265,51 @@ body {
    ============================================ */
 
 .table {
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  background: var(--dark-lighter);
-  color: var(--text);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px var(--shadow);
 }
 
 .table thead {
-  background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
   color: white;
 }
 
+.table thead th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.8px;
+  padding: 1.1rem;
+  border: none;
+}
+
+.table tbody td {
+  padding: 1.1rem;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  transition: background 0.2s ease;
+}
+
 .table tbody tr:hover {
-  background: rgba(99, 102, 241, 0.1);
-  transition: background 0.3s ease;
+  background: rgba(224, 142, 142, 0.04);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(250, 249, 247, 0.5);
+}
+
+.table-bordered {
+  border: 1px solid var(--border);
 }
 
 /* ============================================
@@ -191,62 +317,257 @@ body {
    ============================================ */
 
 .form-label {
-  color: var(--text-muted);
-  font-weight: 500;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.2px;
 }
 
 .form-control,
 .form-select {
-  background: var(--dark-bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  border-radius: 8px;
+  background: var(--bg-main);
+  border: 2px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 10px;
   padding: 0.7rem 1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
 }
 
 .form-control:focus,
 .form-select:focus {
+  background: white;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 0 4px rgba(224, 142, 142, 0.1);
   outline: none;
+  color: var(--text-primary);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-select option {
+  background: white;
+  color: var(--text-primary);
 }
 
 /* ============================================
-   AUTH CARDS
+   AUTH CARDS - REDESIGNED
    ============================================ */
 
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
+  min-height: 85vh;
+  padding: 2rem;
 }
 
-.auth-card {
-  background: var(--dark-surface);
-  border-radius: 14px;
-  padding: 2.5rem;
-  box-shadow: 0 10px 40px var(--shadow);
-  min-width: 400px;
+.auth-card,
+.card.shadow,
+.card.shadow-lg {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 12px 40px var(--shadow-hover);
+  width: 100%;
+  max-width: 420px;
   border: 1px solid var(--border);
-  animation: fadeInUp 0.6s ease;
+  position: relative;
+}
+
+.auth-card::before,
+.card.shadow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  border-radius: 24px 24px 0 0;
 }
 
 .auth-card h3 {
-  color: var(--primary-light);
+  color: var(--text-primary);
   text-align: center;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  letter-spacing: -0.5px;
+}
+
+.auth-card .text-center.mt-3 {
+  margin-top: 1.5rem !important;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.auth-card .small {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.auth-card .small a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.auth-card .small a:hover {
+  color: var(--primary-hover);
+}
+
+/* Add subtle icon before title */
+.auth-card h3::before {
+  content: '◆';
+  display: block;
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
 }
 
 /* ============================================
-   ANIMATIONS
+   ALERTS
    ============================================ */
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
+.alert {
+  border-radius: 12px;
+  border: none;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid;
+  font-weight: 500;
+}
+
+.alert-success {
+  background: rgba(168, 213, 186, 0.15);
+  color: #5a9671;
+  border-left-color: var(--secondary);
+}
+
+.alert-danger {
+  background: rgba(224, 142, 142, 0.15);
+  color: #c76b6b;
+  border-left-color: var(--primary);
+}
+
+.alert-warning {
+  background: rgba(196, 165, 123, 0.15);
+  color: #9d7d57;
+  border-left-color: var(--accent);
+}
+
+.alert-info {
+  background: rgba(224, 142, 142, 0.15);
+  color: var(--primary-hover);
+  border-left-color: var(--primary);
+}
+
+.alert-secondary {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  border-left-color: var(--text-muted);
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+
+.badge {
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
+}
+
+.badge.bg-success {
+  background: var(--secondary) !important;
+  color: white;
+}
+
+.badge.bg-danger {
+  background: var(--primary) !important;
+  color: white;
+}
+
+.badge.bg-warning {
+  background: var(--accent) !important;
+  color: white;
+}
+
+.badge.bg-info {
+  background: var(--secondary) !important;
+  color: white;
+}
+
+.badge.text-dark {
+  color: white !important;
+}
+
+/* ============================================
+   JUMBOTRON / HERO
+   ============================================ */
+
+.jumbotron {
+  background: linear-gradient(135deg, rgba(224, 142, 142, 0.08) 0%, rgba(168, 213, 186, 0.08) 100%);
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  box-shadow: 0 4px 20px var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.jumbotron::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+}
+
+.jumbotron h1 {
+  color: var(--text-primary);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.jumbotron .lead {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  margin-bottom: 1.75rem;
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
 }
 
 /* ============================================
@@ -255,6 +576,11 @@ body {
 
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-hover);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -263,5 +589,184 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-light);
+  background: var(--primary-hover);
+}
+
+/* ============================================
+   ICONS
+   ============================================ */
+
+.fas, .far, .fab {
+  margin-right: 0.4rem;
+}
+
+.btn .fas, .btn .far, .btn .fab {
+  margin-right: 0.3rem;
+}
+
+.fa-inbox {
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  nav, .btn, .alert, footer {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .container, .card {
+    background: white;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #000;
+    padding: 8px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  .auth-card, .card.shadow, .card.shadow-lg {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+
+  .btn {
+    padding: 0.55rem 1.2rem;
+    font-size: 0.875rem;
+  }
+
+  .jumbotron {
+    padding: 2rem 1.5rem;
+  }
+
+  .card-body {
+    padding: 1.25rem;
+  }
+}
+
+/* ============================================
+   SPECIAL STYLING
+   ============================================ */
+
+.d-flex.justify-content-between {
+  margin-bottom: 1.5rem;
+}
+
+canvas {
+  max-height: 320px !important;
+  border-radius: 8px;
+}
+
+.table-responsive {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 8px var(--shadow) !important;
+}
+
+.bg-dark {
+  background: var(--text-primary) !important;
+}
+
+.navbar-dark {
+  /* Override bootstrap dark navbar */
+}
+
+/* Custom form styling for products/form.html */
+.card.bg-dark {
+  background: var(--bg-card) !important;
+  border: 2px solid var(--border);
+}
+
+.card.bg-dark .text-light {
+  color: var(--text-primary) !important;
+}
+
+.card.bg-dark .text-info {
+  color: var(--primary) !important;
+}
+
+.card.bg-dark .form-control,
+.card.bg-dark .form-control-lg {
+  background: var(--bg-main) !important;
+  color: var(--text-primary) !important;
+  border: 2px solid var(--border) !important;
+}
+
+.card.bg-dark .bg-secondary {
+  background: var(--bg-main) !important;
+}
+
+.card.bg-dark .btn-outline-light {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border);
+}
+
+.card.bg-dark .btn-outline-light:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Table danger header fix */
+.table-danger {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%) !important;
+  color: white !important;
+}
+
+.table-danger th {
+  color: white !important;
+}
+
+/* Balance page title */
+.text-danger {
+  color: var(--primary) !important;
+}
+
+/* Enhanced page headings with icons */
+h2 i {
+  color: var(--primary);
+  margin-right: 0.5rem;
+  font-size: 0.9em;
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, input, select, textarea {
+  transition: all 0.2s ease;
+}
+
+/* Better focus states */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }

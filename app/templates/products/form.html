@@ -1,11 +1,45 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-<h2>{{ action }} {{ 'Product' if 'product' in request.path else 'Location' }}</h2>
-<form method="post">
-  {{ form.hidden_tag() }}
-  <div class="mb-3">{{ form.name.label }} {{ form.name(class="form-control") }}</div>
-  <div class="mb-3">{{ form.description.label }} {{ form.description(class="form-control") }}</div>
-  <button class="btn btn-primary">{{ action }}</button>
-  <a class="btn btn-secondary" href="{{ url_for('main.product_list' if 'product' in request.path else 'main.location_list') }}">Cancel</a>
-</form>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="card bg-dark text-light shadow-lg p-5" style="max-width: 600px; width: 100%; border-radius: 20px;">
+    <h3 class="text-center text-info mb-4 fw-bold">
+      {{ action }} {{ 'Product' if 'product' in request.path else 'Location' }}
+    </h3>
+
+    <form method="post">
+      {{ form.hidden_tag() }}
+
+      <!-- Name -->
+      <div class="mb-4">
+        {{ form.name.label(class="form-label fw-semibold text-light") }}
+        {{ form.name(class="form-control form-control-lg bg-secondary text-light border-0 shadow-sm", placeholder="Enter name") }}
+      </div>
+
+      <!-- Description -->
+      <div class="mb-4">
+        {{ form.description.label(class="form-label fw-semibold text-light") }}
+        {{ form.description(class="form-control form-control-lg bg-secondary text-light border-0 shadow-sm", placeholder="Enter description") }}
+      </div>
+
+      <!-- Quantity (only for products) -->
+      {% if 'product' in request.path %}
+      <div class="mb-4">
+        {{ form.qty.label(class="form-label fw-semibold text-light") }}
+        {{ form.qty(class="form-control form-control-lg bg-secondary text-light border-0 shadow-sm", placeholder="Enter quantity") }}
+      </div>
+      {% endif %}
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-between mt-4">
+        <a href="{{ url_for('main.product_list' if 'product' in request.path else 'main.location_list') }}"
+           class="btn btn-outline-light btn-lg px-4">
+          Cancel
+        </a>
+        <button class="btn btn-info btn-lg px-4">
+          {{ 'Save Changes' if action == 'Edit' else 'Add' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}
